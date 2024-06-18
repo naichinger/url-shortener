@@ -44,7 +44,7 @@
             <div class="px-4 sm:px-20">
                 <div class="flex flex-row">
                     <div class="flex justify-center items-center">
-                        <img width="20px" height="20px" [src]="getFaviconUrl(i)" onerror="this.onerror=null; this.src='favicon.ico'">
+                        <img class="min-h-[20px] min-w-[20px]" [src]="getFaviconUrl(i)" onerror="this.onerror=null; this.src='favicon.ico'">
                     </div>
                     <div class="flex flex-col ml-2">
                         <div class="popover">
@@ -54,7 +54,7 @@
                                 <div class="text-sm text-center">Copied!</div>
                             </div>
                         </div>
-                        <span class="text-content3 text-sm line-clamp-1 hover:line-clamp-none">{{ i.url }}</span>
+                        <span class="text-content3 text-sm break-all line-clamp-1 hover:line-clamp-none">{{ i.url }}</span>
                     </div>
                 </div>
             </div>
