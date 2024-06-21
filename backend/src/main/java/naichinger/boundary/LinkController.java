@@ -12,9 +12,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import naichinger.boundary.body.CreateLinkBody;
 import naichinger.control.LinkRepository;
 import naichinger.entity.Link;
+import naichinger.entity.dtos.CreateLinkBody;
 
 @Path("")
 public class LinkController {

@@ -1,4 +1,4 @@
-package naichinger.boundary.body;
+package naichinger.entity.dtos;
 
 public class CreateLinkBody {
     private String url;
@@ -16,7 +16,5 @@ public class CreateLinkBody {
     }
 
     public CreateLinkBody() {
-    }
-
-    
+    }    
 }
