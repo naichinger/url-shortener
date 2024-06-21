@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortener-frontend
+  namespace: shortener
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shortener-frontend
+  template:
+    metadata:
+      labels:
+        app: shortener-frontend
+    spec:
+      containers:
+        - name: shortener-frontend
+          image: ghcr.io/naichinger/url-shortener:latest
+          ports:
+            - containerPort: 80

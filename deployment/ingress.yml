@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shortener-ingress
+  namespace: shortener
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    kubernetes.io/ingress.allow-http: "true"
+    cert-manager.io/cluster-issuer: "cluster-issuer-letsencrypt-staging"
+spec:
+  tls:
+    - hosts:
+        - shrt.k3s.naichinger.com
+      secretName: tls-shrt-ingress-dns
+  rules:
+    - host: shrt.k3s.naichinger.com
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /stats
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: shortener-api-svc
+                port:
+                  number: 80

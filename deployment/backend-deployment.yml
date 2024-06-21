@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortener-api
+  namespace: shortener
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shortener-api
+  template:
+    metadata:
+      labels:
+        app: shortener-api
+    spec:
+      containers:
+        - name: shortener-api
+          image: ghcr.io/naichinger/url-shortener-api:latest
+          env:  
+            - name: QUARKUS_DATASOURCE_DB_KIND
+              value: "postgresql"
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "app"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: "app"
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: "jdbc:postgresql://shortener-db-svc:5432/linksdb"
+            - name: QUARKUS_DATASOURCE_JDBC_MAX_SIZE
+              value: "16"
+          ports:
+            - containerPort: 8080
