@@ -27,5 +27,7 @@ spec:
               value: "jdbc:postgresql://shortener-db-svc:5432/linksdb"
             - name: QUARKUS_DATASOURCE_JDBC_MAX_SIZE
               value: "16"
+            - name: SHORTENER_FRONTEND_URL
+              value: "https://shrt.k3s.naichinger.com"
           ports:
             - containerPort: 8080
