@@ -2,6 +2,8 @@ package naichinger.boundary;
 
 import java.util.Random;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -23,15 +25,19 @@ public class LinkController {
 
     @Inject
     LinkRepository repo;
+    
+    @ConfigProperty(name = "shortener.frontend_url") 
+    String frontendUrl;
+    
     Random random = new Random();
-
+    
     @GET
     @Path("{shortHand}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getRedirect(@PathParam("shortHand") String shortHand) {
         Link l = repo.findById(shortHand);
         if(l == null) {
-            return Response.status(301).header("Location", "http://localhost:4200?s=notfound").build();
+            return Response.status(301).header("Location", frontendUrl + "?s=notfound").build();
         }
         return Response.status(301).header("Location", l.url).build();
     }
