@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - shrt.k3s.naichinger.com
+        - {{ .Values.domain }}
       secretName: tls-shrt-ingress-dns
   rules:
-    - host: shrt.k3s.naichinger.com
+    - host: {{ .Values.domain }}
       http:
         paths:
           - path: /
@@ -73,10 +73,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - shrt.k3s.naichinger.com
+        - {{ .Values.domain }}
       secretName: tls-shrt-ingress-dns
   rules:
-    - host: shrt.k3s.naichinger.com
+    - host: {{ .Values.domain }}
       http:
         paths:
           - path: /

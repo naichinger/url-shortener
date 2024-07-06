@@ -15,6 +15,7 @@ spec:
     spec:
       containers:
         - name: shortener-frontend
-          image: ghcr.io/naichinger/url-shortener:latest
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:
             - containerPort: 80

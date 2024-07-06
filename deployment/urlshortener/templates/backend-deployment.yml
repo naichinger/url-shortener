@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: shortener-api
-          image: ghcr.io/naichinger/url-shortener-api:latest
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
           env:  
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: "postgresql"
@@ -28,6 +29,6 @@ spec:
             - name: QUARKUS_DATASOURCE_JDBC_MAX_SIZE
               value: "16"
             - name: SHORTENER_FRONTEND_URL
-              value: "https://shrt.k3s.naichinger.com"
+              value: "https://{{ .Values.domain }}"
           ports:
             - containerPort: 8080
