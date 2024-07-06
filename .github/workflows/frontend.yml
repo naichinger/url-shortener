@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "frontend/"
+      - "frontend/**"
 
 env:
   REGISTRY: ghcr.io
@@ -50,3 +50,15 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.image.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+        
+      - name: Update Image Version in the related HelmChart values.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'deployment/helm/values.yaml'
+          propertyPath: 'frontend.image.tag'
+          value: ${{ steps.image.outputs.version }}
+          branch: main
+          #targetBranch: development
+          #createPR: true
+          message: 'Update Image Version to ${{ steps.image.outputs.version }}'

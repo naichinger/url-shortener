@@ -36,6 +36,8 @@ export class NewComponent implements OnInit {
     this.readHistoryFromLocalStorage();
   }
 
+  
+
   submitButtonClicked() {
     if (this.submitLoading) {
       return;

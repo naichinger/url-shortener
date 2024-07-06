@@ -21,7 +21,7 @@ import naichinger.entity.dtos.CreateLinkBody;
 @Path("")
 public class LinkController {
 
-    private static int MAX_FIND_SHORTHAND_TRY_COUNT = 10;
+    private static int MAX_FIND_SHORTHAND_TRY_COUNT = 5;
 
     @Inject
     LinkRepository repo;
