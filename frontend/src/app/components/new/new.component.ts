@@ -80,7 +80,7 @@ export class NewComponent implements OnInit {
 
   private checkValidUrl(url: string) {
     try {
-      new URL(this.url);
+      new URL(url);
     } catch (error) {
       return false;
     }
