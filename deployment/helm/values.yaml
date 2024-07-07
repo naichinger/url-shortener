@@ -1,6 +1,5 @@
 domain: shrt.k3s.naichinger.com
-namespace:
-  '[object Object]': null
+namespace: shortener
 backend:
   image:
     repository: ghcr.io/naichinger/url-shortener-api
