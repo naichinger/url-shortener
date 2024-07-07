@@ -4,9 +4,9 @@ backend:
   image:
     repository: ghcr.io/naichinger/url-shortener-api
     pullPolicy: IfNotPresent
-    tag: 22594b9b
+    tag: 6440fc10
 frontend:
   image:
     repository: ghcr.io/naichinger/url-shortener
     pullPolicy: IfNotPresent
-    tag: 22594b9b
+    tag: 6440fc10
