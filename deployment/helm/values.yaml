@@ -1,12 +1,13 @@
 domain: shrt.k3s.naichinger.com
-namespace: {{ .Values.namespace }}
+namespace:
+  '[object Object]': null
 backend:
   image:
     repository: ghcr.io/naichinger/url-shortener-api
     pullPolicy: IfNotPresent
-    tag: c5ed66af
+    tag: 22594b9b
 frontend:
   image:
     repository: ghcr.io/naichinger/url-shortener
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: 22594b9b
