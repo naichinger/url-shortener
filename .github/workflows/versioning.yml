@@ -2,10 +2,12 @@ name: versioning
 
 on:
   push:
-      branches: [ main ]
-      paths:
-        - "backend/**"
-        - "frontend/**"
+    branches: [ main ]
+    tags:
+      - 'v*'
+    paths:
+      - "backend/**"
+      - "frontend/**"
 
 env:
   REGISTRY: ghcr.io
