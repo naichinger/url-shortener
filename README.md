@@ -31,9 +31,9 @@ This setup ensures a streamlined development and deployment process, making it e
 
 ## Workflow
 
-When a contributor makes a commit to the main branch, a GitHub Action is triggered. This action creates new Docker images for both the backend and frontend, tagging them with the first eight characters of the commit hash. Once these images are pushed to the registry, another workflow is triggered to update the application version in the Helm chart's values.yml file.
+When a contributor makes a commit to the main branch, a GitHub Action is triggered. This action creates new Docker images for both the backend and frontend, tagging them with the first eight characters of the commit hash. Once these images are pushed to the registry, another workflow is triggered to update the application version in the Helm chart's `values.yml` file.
 
-Additionally, when a tag is pushed, a GitHub Action is triggered that updates the version in the values.yml file using the tag (e.g., 1.0.2) as the new version number.
+Additionally, when a tag is pushed, a GitHub Action is triggered that updates the version in the `values.yml` file using the tag (e.g., `1.0.2`) as the new version number.
 
 
 ## ArgoCD
