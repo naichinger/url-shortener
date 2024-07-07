@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shortener-db-svc
-  namespace: shortener
+  namespace: {{ .Values.namespace }}
 spec:
   ports:
     - port: 5432

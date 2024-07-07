@@ -1,11 +1,7 @@
 name: frontend-cd
 
-on:
-  push:
-    branches: [ main ]
-    paths:
-      - "frontend/**"
-
+on: [workflow_call]
+  
 env:
   REGISTRY: ghcr.io
 
@@ -29,7 +25,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: get docker version tag
+
+      - name: create image tag
         id: image
         run: |
           # Strip git ref prefix from version
@@ -40,7 +37,7 @@ jobs:
           [ "$VERSION" == "main" ] && VERSION=$(echo ${{ github.sha }} | cut -c1-8)
           echo VERSION=$VERSION
           echo "::set-output name=version::$VERSION"
-
+          
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -50,15 +47,3 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.image.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-        
-      - name: Update Image Version in the related HelmChart values.yaml
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'deployment/helm/values.yaml'
-          propertyPath: 'frontend.image.tag'
-          value: ${{ steps.image.outputs.version }}
-          branch: main
-          #targetBranch: development
-          #createPR: true
-          message: 'Update Image Version to ${{ steps.image.outputs.version }}'

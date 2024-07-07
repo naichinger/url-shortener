@@ -1,13 +1,23 @@
-name: backend-cd
+name: versioning
 
-on: [workflow_call]
-  
+on:
+  push:
+      branches: [ main ]
+      paths:
+        - "backend/**"
+        - "frontend/**"
+
 env:
   REGISTRY: ghcr.io
 
 jobs:
   build-backend:
-    name: build-backend
+    uses: ./.github/workflows/backend.yml
+  build-frontend:
+    uses: ./.github/workflows/frontend.yml
+  create-versions:
+    needs: [build-backend, build-frontend]
+    name: create version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,22 +28,9 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: 'temurin'
-
-      - name: Package
-        working-directory: ./backend
-        run: mvn package -Dmaven.test.skip
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: create image tag
         id: image
@@ -46,13 +43,15 @@ jobs:
           [ "$VERSION" == "main" ] && VERSION=$(echo ${{ github.sha }} | cut -c1-8)
           echo VERSION=$VERSION
           echo "::set-output name=version::$VERSION"
-
-      - name: Build and push
-        uses: docker/build-push-action@v2
+                
+      - name: Update Image Version in the related HelmChart values.yaml
+        uses: fjogeleit/yaml-update-action@main
         with:
-          context: ./backend
-          file: ./backend/src/main/docker/Dockerfile.jvm
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-api:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-api:${{ steps.image.outputs.version }} 
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+            valueFile: 'deployment/helm/values.yaml'
+            branch: main
+            message: 'Update Image Version to ${{ steps.image.outputs.version }}'
+            changes: |
+              {
+                  "backend.image.tag": "${{ steps.image.outputs.version }}",
+                  "frontend.image.tag": "${{ steps.image.outputs.version }}"
+              }

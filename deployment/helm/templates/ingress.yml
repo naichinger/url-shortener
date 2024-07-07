@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shortener-ingress-1
-  namespace: shortener
+  namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -64,7 +64,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shortener-ingress-2
-  namespace: shortener
+  namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
