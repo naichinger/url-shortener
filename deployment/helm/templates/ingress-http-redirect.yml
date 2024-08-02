@@ -1,0 +1,92 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect
+  namespace: {{ .Values.namespace }}
+
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shortener-ingress-http-1
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.namespace }}-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.priority: "2"
+spec:
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /favicon.ico
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /main-{[A-Z0-9]{8}}.js
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /polyfills-{[A-Z0-9]{8}}.js
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /styles-{[A-Z0-9]{8}}.css
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+          - path: /stats
+            pathType: Exact
+            backend:
+              service:
+                name: shortener-frontend-svc
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shortener-ingress-http-2
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.namespace }}-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.priority: "1"
+spec:
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: shortener-api-svc
+                port:
+                  number: 80
