@@ -7,6 +7,7 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.priority: "2"
+    traefik.ingress.kubernetes.io/router.rulesyntax: "v2"
     cert-manager.io/cluster-issuer: "cluster-issuer-letsencrypt"
 spec:
   tls:
@@ -32,7 +33,7 @@ spec:
                 port:
                   number: 80
           - path: /main-{[A-Z0-9]{8}}.js
-            pathType: Exact
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: shortener-frontend-svc

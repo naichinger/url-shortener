@@ -19,6 +19,7 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.namespace }}-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.rulesyntax: "v2"
     traefik.ingress.kubernetes.io/router.priority: "2"
 spec:
   rules:
